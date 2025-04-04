@@ -1,24 +1,23 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import numpy as np
 import cv2
 import mlflow
 import os
 from werkzeug.utils import secure_filename
-import mlflow
 
-import os
-#os.environ["DAGSHUB_TOKEN"] = "ffa6c3377e5daa8d590ce434ab95c3d1153c296f"
-
-
+# Load the ML model from MLflow
 logged_model = 'runs:/75945d4bb6cc4036b152f03294e32e4f/svm_poly_model'
-
-# Load model as a PyFuncModel.
 model = mlflow.pyfunc.load_model(logged_model)
 IMG_SIZE = 128
 
-
+# Flask app setup
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
+
+# Configurations
 app.config['UPLOAD_FOLDER'] = 'uploads'
+app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # Max upload: 10MB
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 def preprocess_image(file_path):
@@ -47,6 +46,10 @@ def predict():
         return jsonify({'diagnosis': label})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    finally:
+        # Cleanup uploaded file after processing
+        if os.path.exists(filepath):
+            os.remove(filepath)
 
 if __name__ == '__main__':
     app.run(debug=True, port=5555)
