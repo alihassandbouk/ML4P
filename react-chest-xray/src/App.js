@@ -8,42 +8,40 @@ function App() {
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
-    setResult(''); // Reset any previous result
+    setResult('');
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!selectedFile) {
-      alert("Please select a .jpeg image first.");
+      alert("Please select an image.");
       return;
     }
 
-    // Validate that the file is .jpeg
     if (selectedFile.type !== "image/jpeg") {
-      alert("Please upload a .jpeg file.");
+      alert("Only .jpeg images are supported.");
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', selectedFile);
+    formData.append('image', selectedFile);
 
     try {
       setLoading(true);
       setResult('');
 
-      // Adjust to match your Flask server endpoint & port
       const response = await axios.post('http://127.0.0.1:5555/predict', formData, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          'Content-Type': 'multipart/form-data',
+        },
       });
 
-      setResult(response.data.result);
+      setResult(response.data.diagnosis);
 
     } catch (error) {
       console.error(error);
-      setResult('Error occurred while analyzing the X-ray. Please try again.');
+      setResult('An error occurred during prediction.');
     } finally {
       setLoading(false);
     }
@@ -88,8 +86,6 @@ function App() {
   return (
     <div style={mainContainerStyle}>
       <div style={formContainerStyle}>
-
-        {/* Title / Heading */}
         <h1 style={headingStyle}>
           <img 
             src="https://img.icons8.com/ios-filled/50/hospital-room--v1.png" 
@@ -98,16 +94,15 @@ function App() {
           />
           Chest X-Ray Classifier
         </h1>
-        
+
         <p style={{ marginBottom: '1rem' }}>
           Upload your .jpeg X-ray image for analysis.
         </p>
 
-        {/* Upload Form */}
         <form onSubmit={handleSubmit}>
           <input
             type="file"
-            accept=".jpeg"
+            accept="image/jpeg"
             onChange={handleFileChange}
             style={{ margin: '1rem 0' }}
           />
@@ -133,7 +128,6 @@ function App() {
           </button>
         </form>
 
-        {/* Loading / Analyzing Indicator */}
         {loading && (
           <div style={{ margin: '1rem 0' }}>
             <p style={{ color: '#666' }}>
@@ -147,14 +141,14 @@ function App() {
           </div>
         )}
 
-        {/* Result Display */}
         {result && !loading && (
           <div style={{ margin: '1rem 0' }}>
             <h3>Result:</h3>
-            <p style={{ fontSize: '1.2rem', color: '#333' }}>{result}</p>
+            <p style={{ fontSize: '1.2rem', color: result.includes("PNEUMONIA") ? 'red' : 'green' }}>
+              {result}
+            </p>
           </div>
         )}
-
       </div>
     </div>
   );
