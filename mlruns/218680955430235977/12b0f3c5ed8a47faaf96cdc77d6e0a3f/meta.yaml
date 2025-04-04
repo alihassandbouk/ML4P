@@ -1,0 +1,15 @@
+artifact_uri: file:///home/alidb/Desktop/Masters/ML4P/project/mlruns/218680955430235977/12b0f3c5ed8a47faaf96cdc77d6e0a3f/artifacts
+end_time: 1743723484550
+entry_point_name: ''
+experiment_id: '218680955430235977'
+lifecycle_stage: active
+run_id: 12b0f3c5ed8a47faaf96cdc77d6e0a3f
+run_name: SVM_linear
+run_uuid: 12b0f3c5ed8a47faaf96cdc77d6e0a3f
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1743723009659
+status: 3
+tags: []
+user_id: alidb
