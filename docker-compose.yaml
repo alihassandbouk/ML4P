@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    image: flask-app
+    container_name: flask-backend
+    ports:
+      - "5555:5555"
+    networks:
+      - app-network
+
+  frontend:
+    image: front-end-react-app
+    container_name: react-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://flask-backend:5555
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
