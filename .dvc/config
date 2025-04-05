@@ -1,4 +1,5 @@
 [core]
-    remote = myremote
-['remote "myremote"']
-    url = gdrive://1XNVgtbFIQKxc2QfQHh_frPokxVqWotw2
+    remote = s3-bucket
+['remote "s3-bucket"']
+    url = s3://dvc-bucket-ahd
+    profile = default
