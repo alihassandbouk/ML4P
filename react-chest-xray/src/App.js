@@ -32,11 +32,15 @@ function App() {
       setLoading(true);
       setResult('');
 
-      const response = await axios.post('http://127.0.0.1:5555/predict', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_API_URL}/predict`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
 
       setResult(response.data.diagnosis);
     } catch (error) {
@@ -75,7 +79,7 @@ function App() {
                 marginRight: '0.5rem',
                 verticalAlign: 'middle',
                 width: 20,
-                height: 20
+                height: 20,
               }}
             />
             Analyze X-ray
