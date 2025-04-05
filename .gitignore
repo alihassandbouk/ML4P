@@ -1,1 +1,7 @@
 /venv
+/uploads
+.dockerignore
+.dvc/
+DATA/
+__pycache__/
+mlruns/
