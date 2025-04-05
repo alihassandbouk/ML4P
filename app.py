@@ -7,8 +7,9 @@ import os
 from werkzeug.utils import secure_filename
 
 # Load the ML model from MLflow
-logged_model = 'runs:/75945d4bb6cc4036b152f03294e32e4f/svm_poly_model'
+logged_model = '/app/mlruns/218680955430235977/75945d4bb6cc4036b152f03294e32e4f/artifacts/svm_poly_model'
 model = mlflow.pyfunc.load_model(logged_model)
+
 IMG_SIZE = 128
 
 # Flask app setup
@@ -52,4 +53,7 @@ def predict():
             os.remove(filepath)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5555)
+    app.run(host="0.0.0.0", port=5555, debug=True)
+
+
+
